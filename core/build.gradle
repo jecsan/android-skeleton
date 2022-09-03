@@ -1,0 +1,73 @@
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+}
+
+android {
+    namespace "com.codecodecoffee.android.core"
+    compileSdk rootProject.ext.targetSdk
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdk
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
+    }
+
+    buildTypes {
+
+        debug {
+            resValue "string", "account_type", "android-skeleton-debug"
+        }
+
+        staging {
+            resValue "string", "account_type", "android-skeleton-staging"
+        }
+        release {
+            resValue "string", "account_type", "android-skeleton"
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+
+    implementation project(":sharedmodel")
+    implementation project(":data")
+    implementation project(":webservice")
+
+    implementation "androidx.security:security-crypto:1.0.0"
+
+    // For Identity Credential APIs
+    implementation "androidx.security:security-identity-credential:1.0.0-alpha03"
+
+    // For App Authentication APIs
+    implementation "androidx.security:security-app-authenticator:1.0.0-alpha02"
+
+    // For App Authentication API testing
+    androidTestImplementation "androidx.security:security-app-authenticator:1.0.0-alpha02"
+
+    implementation "com.github.jecsan:gatekeeper:1.0.2"
+    implementation "androidx.work:work-runtime-ktx:$workManager"
+    implementation "androidx.hilt:hilt-work:$hiltWork"
+
+
+    implementation "com.google.dagger:hilt-android:$daggerHilt"
+    kapt "com.google.dagger:hilt-compiler:$daggerHilt"
+    kapt "androidx.hilt:hilt-compiler:$hiltCompiler"
+
+    implementation("androidx.core:core-ktx:$ktxCore")
+    testImplementation "junit:junit:4.13.2"
+    androidTestImplementation "androidx.test.ext:junit:1.1.3"
+}

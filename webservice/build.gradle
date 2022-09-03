@@ -1,0 +1,64 @@
+plugins {
+    id("com.android.library")
+    id("org.jetbrains.kotlin.android")
+    id("kotlinx-serialization")
+    id("kotlin-kapt")
+    id("dagger.hilt.android.plugin")
+}
+
+android {
+    namespace("com.codecodecoffee.android.webservice")
+    compileSdk(rootProject.ext.targetSdk)
+
+    defaultConfig {
+        minSdk rootProject.ext.minSdkVersion
+        targetSdk rootProject.ext.targetSdk
+        testInstrumentationRunner("androidx.test.runner.AndroidJUnitRunner")
+        consumerProguardFiles("consumer-rules.pro")
+    }
+
+    buildTypes {
+
+        debug {
+            buildConfigField("String", "BASE_URL", "\"https://baseurl.com/\"")
+        }
+        staging {
+            buildConfigField("String", "BASE_URL", "\"https://baseurl.com/\"")
+        }
+        release {
+            buildConfigField("String", "BASE_URL", "\"https://baseurl.com/\"")
+
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
+        }
+    }
+    compileOptions {
+        sourceCompatibility = JavaVersion.VERSION_1_8
+        targetCompatibility = JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
+}
+
+dependencies {
+
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.0")
+    implementation("io.ktor:ktor-client-core:$kTorVersion")
+    implementation("io.ktor:ktor-client-okhttp:$kTorVersion")
+    implementation("io.ktor:ktor-client-logging:$kTorVersion")
+    implementation("io.ktor:ktor-client-serialization:$kTorVersion")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$kTorVersion")
+    implementation("io.ktor:ktor-client-content-negotiation:$kTorVersion")
+    implementation("io.ktor:ktor-client-resources:$kTorVersion")
+
+    implementation("io.ktor:ktor-client-auth:$kTorVersion")
+    implementation("io.ktor:ktor-client-encoding:$kTorVersion")
+
+    implementation "com.google.dagger:hilt-android:$daggerHilt"
+    kapt "com.google.dagger:hilt-compiler:$daggerHilt"
+
+    implementation("androidx.core:core-ktx:$ktxCore")
+    testImplementation("junit:junit:4.13.2")
+    androidTestImplementation("androidx.test.ext:junit:1.1.3")
+}
